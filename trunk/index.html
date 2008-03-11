@@ -1,5 +1,10 @@
-<html>
-    <head>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+    
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
         
         <title>JsSocket Test</title>
 
@@ -34,8 +39,11 @@
 
                 $("#connect").click(function()
                 {
-                    _jssocket.connect($("#ip").val(),$("#port").val());
-                    $("#messages").append("Connecting\n");
+                    if(_jssocket != null)
+                    {
+                        _jssocket.connect($("#ip").val(),$("#port").val());
+                        $("#messages").append("Connecting\n");
+                    }
                 });
 
                 $("#disconnect").click(function()
@@ -102,17 +110,15 @@
                 font:           11px sans-serif;            }
     
             ul { 
-                list-style-type:none;                       }
+                margin-left:    30px;                       }
 
             h1 { 
-                font:           18px sans-serif;            }
+                font:           24px sans-serif;            }
 
-            h2 { 
-                font:           16px bold sans-serif;       }
-
-            body { 
-                background:     #f4f4f4;                    }
-
+            h2 {
+                margin-top:     30px;
+                font:           bold 16px sans-serif;       }
+                
             input, textarea {
                 font:           11px Consolas, Monaco, Courier, monospace;
                 padding:        2px;
@@ -127,8 +133,8 @@
             #container { 
                 padding:        20px;
                 background:     #FFF;
-                width:          500px;
-                margin:         50px auto;                  }
+                width:          600px;
+                margin:         0px auto;                  }
 
             #messages { 
                 height:         300px; 
@@ -159,9 +165,20 @@
          
             <h1>Javascript Sockets</h1>
             <hr />
-            <p>This page embeds an swf that exposes socket functionality 
-               to javascript
+            
+            <h2>Introduction</h2>
+            <p>Javascript Sockets use the Socket functionality available in
+            flash, and through an ExternalInterface with an swf embedded in a
+            page, provide the ability to program sockets with javascript</p>
+            
+            <h2>Project</h2>
+            <ul>
+                <li><p>Google Code: <a href="http://code.google.com/p/jssockets/">
+                    http://code.google.com/p/jssockets/</a></p></li>
+            </ul>
+                    
 
+            <h2>Example</h2>
             <p>This is the IP and Port that you want to connect to<br />
                 <input type="text" id="ip" value="69.65.41.84" />  
                 <input type="text" id="port" value="10000" /> 
@@ -186,16 +203,6 @@
                 <div id="flash"></div>
             </div>
 
-            <p>Check the source code of this page for an example 
-            of how to use the code, the flash files are listed below</p>
-
-            <h1>Flash Files</h1>
-            <hr />
-            <ul>
-                <li><a href="remoting/RemotingEvent.as">remoting/RemotingEvent.as</a></li>
-                <li><a href="remoting/RemotingSocket.as">remoting/RemotingSocket.as</a></li>
-                <li><a href="JsSocket.mxml">JsSocket.mxml</a></li>
-                <li><a href="JsSocket.swf">JsSocket.swf</a></li>
         </div>
 
     </body>
