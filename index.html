@@ -1,0 +1,203 @@
+<html>
+    <head>
+        
+        <title>JsSocket Test</title>
+
+        <script src="jquery.js" language="javascript"></script>
+        <script src="jquery.flash.js" language="javascript"></script>
+    
+        <script>
+
+            var _jssocket = null;
+
+            $(function() 
+            {
+                $('#flash').flash({
+                    src: 'JsSocket.swf'
+                });
+
+                $(".send, #disconnect").attr("disabled","disabled");
+
+                $("#showflash").click(function()
+                {
+                    if(!this.checked)
+                    {
+                        $("#flash embed").css("visibility","hidden");
+                        $("#flashcontainer").css("height","0px");
+                    }   
+                    else
+                    {
+                        $("#flashcontainer").css("height","270px");
+                        $("#flash embed").css("visibility","visible");
+                    }
+                });
+
+                $("#connect").click(function()
+                {
+                    _jssocket.connect($("#ip").val(),$("#port").val());
+                    $("#messages").append("Connecting\n");
+                });
+
+                $("#disconnect").click(function()
+                {
+                    _jssocket.disconnect();
+                });
+
+                $("#send").click(function()
+                {
+                    _jssocket.write($("#message").val()+"\n");
+                    $("#message").val("");
+                });
+
+                
+            });
+
+            function jssocket_init()
+            {
+                // This is the id/name of the flash object
+                _jssocket = $("#flash *").get(0);
+            
+                // Set callbacks for flash to call
+                _jssocket.setCallBack("connect","soc_connect");
+                _jssocket.setCallBack("disconnect","soc_closed");
+                _jssocket.setCallBack("recieve","soc_msg");
+                _jssocket.setCallBack("ioerror","soc_error");
+            }
+
+            // Called when socket connects
+            function soc_connect()
+            {
+                $("#connect").attr("disabled","disabled");
+                $(".send, #disconnect").attr("disabled","");
+                $("#messages").append("Socket Connected\n");;
+            }
+
+            function soc_error()
+            {
+                $("#connect").attr("disabled","");
+                $("#messages").append("There was an error connecting\n");;
+            }
+            
+            // Called when socket is closed
+            function soc_closed()
+            {
+                $(".send, #disconnect").attr("disabled","disabled");
+                $("#connect").attr("disabled","");
+                $("#messages").append("Socket Closed\n");;
+            }
+            
+            // Called when socket receives message
+            function soc_msg(msg)
+            {
+                $("#messages").append("Recieved Message: "+msg);;
+            }
+
+
+        </script>
+
+        <style>
+            * { 
+                margin:         0px;
+                padding:        0px;
+                font:           11px sans-serif;            }
+    
+            ul { 
+                list-style-type:none;                       }
+
+            h1 { 
+                font:           18px sans-serif;            }
+
+            h2 { 
+                font:           16px bold sans-serif;       }
+
+            body { 
+                background:     #f4f4f4;                    }
+
+            input, textarea {
+                font:           11px Consolas, Monaco, Courier, monospace;
+                padding:        2px;
+                border:         1px solid #999;             }
+
+            hr { 
+                margin-bottom:  4px;                        }
+
+            p {
+                margin:         10px 0px;                   }
+
+            #container { 
+                padding:        20px;
+                background:     #FFF;
+                width:          500px;
+                margin:         50px auto;                  }
+
+            #messages { 
+                height:         300px; 
+                width:          100%; 
+                border:         1px solid #666;             }
+
+            #flashcontainer {
+                height:         0px;
+                overflow:       hidden;
+                padding:        0px 15px;                   }
+
+            #flash embed, #flash object { 
+                height:         270px; 
+                width:          470px;
+                position:       absolute;
+                visibility:     hidden;                     }
+
+            #showflash { 
+                margin:        3px;                         }
+
+        </style>
+
+    </head>
+
+    <body>
+
+        <div id="container">
+         
+            <h1>Javascript Sockets</h1>
+            <hr />
+            <p>This page embeds an swf that exposes socket functionality 
+               to javascript
+
+            <p>This is the IP and Port that you want to connect to<br />
+                <input type="text" id="ip" value="69.65.41.84" />  
+                <input type="text" id="port" value="10000" /> 
+                <button id="connect">Connect</button>
+                <button id="disconnect">Disconnect</button><br />
+            </p>
+
+            <p>Type in a message and click send to send these message to the server. type 'quit' 
+               and the server will close the connection.<br />
+                <input type="text" id="message" value="" class="send" /> 
+                <button id="send" class="send" >Send</button>
+            </p>
+     
+            <textarea id="messages" readonly="readonly"></textarea>
+
+            <div style="margin:5px;">
+            <input type="checkbox" id="showflash" />
+            <label for="showflash">Show Flash</label>
+            </div>
+
+            <div id="flashcontainer">
+                <div id="flash"></div>
+            </div>
+
+            <p>Check the source code of this page for an example 
+            of how to use the code, the flash files are listed below</p>
+
+            <h1>Flash Files</h1>
+            <hr />
+            <ul>
+                <li><a href="remoting/RemotingEvent.as">remoting/RemotingEvent.as</a></li>
+                <li><a href="remoting/RemotingSocket.as">remoting/RemotingSocket.as</a></li>
+                <li><a href="JsSocket.mxml">JsSocket.mxml</a></li>
+                <li><a href="JsSocket.swf">JsSocket.swf</a></li>
+        </div>
+
+    </body>
+
+</html>
