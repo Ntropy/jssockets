@@ -9,7 +9,7 @@
         <title>JsSocket Test</title>
 
         <script src="jquery.js" language="javascript"></script>
-        <script src="jquery.flash.js" language="javascript"></script>
+        <script src="swfobject.js" language="javascript"></script>
     
         <script>
 
@@ -17,32 +17,18 @@
 
             $(function() 
             {
-                $('#flash').flash({
-                    src: 'JsSocket.swf'
-                });
+                var so = new SWFObject("JsSocket.swf", "mymovie", "470", "200", "8", "#336699");
+                so.addParam("allowScriptAccess", "always");
+   				so.write("flashcontent");
 
                 $(".send, #disconnect").attr("disabled","disabled");
-
-                $("#showflash").click(function()
-                {
-                    if(!this.checked)
-                    {
-                        $("#flash embed").css("visibility","hidden");
-                        $("#flashcontainer").css("height","0px");
-                    }   
-                    else
-                    {
-                        $("#flashcontainer").css("height","270px");
-                        $("#flash embed").css("visibility","visible");
-                    }
-                });
 
                 $("#connect").click(function()
                 {
                     if(_jssocket != null)
                     {
                         _jssocket.connect($("#ip").val(),$("#port").val());
-                        $("#messages").append("Connecting\n");
+                        $("#messages").append("Connecting<br />\n");
                     }
                 });
 
@@ -53,7 +39,7 @@
 
                 $("#send").click(function()
                 {
-                    _jssocket.write($("#message").val()+"\n");
+                    _jssocket.write($("#message").val()+"<br />\n");
                     $("#message").val("");
                 });
 
@@ -63,7 +49,7 @@
             function jssocket_init()
             {
                 // This is the id/name of the flash object
-                _jssocket = $("#flash *").get(0);
+                _jssocket = document.getElementById("mymovie");
             
                 // Set callbacks for flash to call
                 _jssocket.setCallBack("connect","soc_connect");
@@ -77,13 +63,13 @@
             {
                 $("#connect").attr("disabled","disabled");
                 $(".send, #disconnect").attr("disabled","");
-                $("#messages").append("Socket Connected\n");;
+                $("#messages").append("Socket Connected<br />\n");;
             }
 
             function soc_error()
             {
                 $("#connect").attr("disabled","");
-                $("#messages").append("There was an error connecting\n");;
+                $("#messages").append("There was an error connecting<br />\n");;
             }
             
             // Called when socket is closed
@@ -91,13 +77,13 @@
             {
                 $(".send, #disconnect").attr("disabled","disabled");
                 $("#connect").attr("disabled","");
-                $("#messages").append("Socket Closed\n");;
+                $("#messages").append("Socket Closed<br />\n");;
             }
             
             // Called when socket receives message
             function soc_msg(msg)
             {
-                $("#messages").append("Recieved Message: "+msg);;
+                $("#messages").append("Recieved Message: "+msg);
             }
 
 
@@ -126,6 +112,9 @@
 
             hr { 
                 margin-bottom:  4px;                        }
+            
+            h3 { 
+                font-weight:	bold;						}
 
             p {
                 margin:         10px 0px;                   }
@@ -137,20 +126,10 @@
                 margin:         0px auto;                  }
 
             #messages { 
-                height:         300px; 
+                height:         200px; 
                 width:          100%; 
                 border:         1px solid #666;             }
 
-            #flashcontainer {
-                height:         0px;
-                overflow:       hidden;
-                padding:        0px 15px;                   }
-
-            #flash embed, #flash object { 
-                height:         270px; 
-                width:          470px;
-                position:       absolute;
-                visibility:     hidden;                     }
 
             #showflash { 
                 margin:        3px;                         }
@@ -194,15 +173,10 @@
      
             <textarea id="messages" readonly="readonly"></textarea>
 
-            <div style="margin:5px;">
-            <input type="checkbox" id="showflash" />
-            <label for="showflash">Show Flash</label>
-            </div>
-
-            <div id="flashcontainer">
-                <div id="flash"></div>
-            </div>
-
+            <br /><br /><h3>Flash (usually hidden)</h3><hr />
+			<div id="flashcontent">
+			  This text is replaced by the Flash movie.
+			</div>
         </div>
 
     </body>
